@@ -4,11 +4,9 @@
       <template v-slot:header>
         <HeaderComp />
       </template>
-      <template v-slot:>
-
-      </template>
       <template v-slot:main>
-        <NavBar />
+      <CarouselComp />
+        <!-- <NavBar /> -->
         
         
       </template>
@@ -28,7 +26,7 @@ export default Vue.extend({
     LayoutComp,
     HeaderComp,
     CarouselComp,
-    NavBar,
+    // NavBar,
   },
 });
 </script>

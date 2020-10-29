@@ -12,13 +12,11 @@
     @sliding-start="onSlideStart"
     @sliding-end="onSlideEnd"
   >
-    <b-carousel-slide>
+    <b-carousel-slide v-for="(item, index) in banner" :key="index">
       <template #img>
         <img
           class="d-block img-fluid w-100"
-          width="1024"
-          height="480"
-          src="https://picsum.photos/1024/480/?image=55"
+          :src="item.img"
           alt="image slot"
         />
       </template>
@@ -27,15 +25,29 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { Component, Vue } from "vue-property-decorator";
 import { BCarousel, BCarouselSlide } from "bootstrap-vue";
-export default Vue.extend({
-  name: "CarouselComp",
+import { getBanner } from "@/services/api";
+import { BannerPageData } from "@/types/response";
+
+@Component({
   components: {
     BCarousel,
     BCarouselSlide,
   },
-});
+})
+export default class CarouselComp extends Vue {
+  banner = [] as BannerPageData[];
+
+  created() {
+    this.getBanner()
+  }
+
+  async getBanner() {
+    const res = await getBanner({ type: 1 });
+    this.banner = res.record;
+  }
+}
 </script>
 
 <style lang="less" scoped></style>
