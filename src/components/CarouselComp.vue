@@ -14,11 +14,8 @@
   >
     <b-carousel-slide v-for="(item, index) in banner" :key="index">
       <template #img>
-        <img
-          class="d-block img-fluid w-100"
-          :src="item.img"
-          alt="image slot"
-        />
+        <div>1111111</div>
+        <img class="d-block img-fluid w-100" :src="item.img" alt="image slot" />
       </template>
     </b-carousel-slide>
   </b-carousel>
@@ -40,7 +37,7 @@ export default class CarouselComp extends Vue {
   banner = [] as BannerPageData[];
 
   created() {
-    this.getBanner()
+    this.getBanner();
   }
 
   async getBanner() {
