@@ -7,8 +7,6 @@
       <template v-slot:main>
       <CarouselComp />
         <!-- <NavBar /> -->
-        
-        
       </template>
     </LayoutComp>
   </div>

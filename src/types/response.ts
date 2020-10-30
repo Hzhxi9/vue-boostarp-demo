@@ -525,6 +525,7 @@ export interface NewsPageData {
     type: number;
     id: number;
     brief: string;
+    remarks: string;
 }
 
 export interface PageRecordData<T> {
@@ -964,4 +965,13 @@ export interface LiveData {
     label: string; // 分类：基本面，技术分析，大v专场，入门课程
     limits: number; // 观看权限0：注册黄金帮 1：手机号验证 2：密码 3：无限制
     type: number; // 直播类型: 0直播，1录播
+}
+
+export interface CooperateData {
+    create_time: string;
+    id: number;
+    link: string;
+    name: string;
+    status: string;
+    thumb: string;
 }
