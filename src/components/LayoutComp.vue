@@ -8,7 +8,7 @@
       <slot name="main" />
     </main>
     <footer>
-      尾部
+      <footer-comp />
     </footer>
   </div>
 </template>
@@ -16,6 +16,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { BContainer, BRow, BCol } from "bootstrap-vue";
+import FooterComp from "@/components/FooterComp.vue";
 
 export default Vue.extend({
   name: "LayoutComp",
@@ -23,6 +24,7 @@ export default Vue.extend({
     // BContainer,
     // BRow,
     // BCol,
+    FooterComp,
   },
 });
 </script>
@@ -31,6 +33,12 @@ export default Vue.extend({
 .layout {
   .header {
     background: #333;
+  }
+  footer {
+    min-height: 359px !important;
+    background-color: #343434;
+    color: #fff;
+    padding-top: 50px;
   }
 }
 </style>

@@ -5,8 +5,9 @@
         <HeaderComp />
       </template>
       <template v-slot:main>
-      <CarouselComp />
+      <!-- <CarouselComp /> -->
         <!-- <NavBar /> -->
+        <router-view />
       </template>
     </LayoutComp>
   </div>
@@ -23,7 +24,7 @@ export default Vue.extend({
   components: {
     LayoutComp,
     HeaderComp,
-    CarouselComp,
+    // CarouselComp,
     // NavBar,
   },
 });
