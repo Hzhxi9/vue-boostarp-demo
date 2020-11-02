@@ -2,7 +2,7 @@
   <div class="home">
     <!-- 功能介绍 -->
     <ContentComp>
-      <b-row cols="1" cols-sm="2" cols-md="4" cols-lg="4" class="introduce">
+      <b-row cols="1" cols-sm="2" cols-md="3" cols-lg="4" class="introduce">
         <b-col
           v-for="(item, index) in funIntroduce"
           :key="index"
@@ -20,12 +20,73 @@
     <!-- 名师介绍 -->
     <ContentComp>
       <b-carousel
-        id="carousel-fade"
+        id="carousel-1"
         style="text-shadow: 0px 0px 2px #000"
-        fade
+        controls
         indicators
       >
+        <b-carousel-slide
+          v-for="(item, index) in Math.ceil(analyst.length / 4)"
+          :key="index"
+        >
+          <template v-slot:img>
+            <b-row
+              cols="2"
+              cols-sm="2"
+              cols-md="4"
+              cols-lg="4"
+              class="analyst-list"
+            >
+              <b-col
+                v-for="(cItem, cIndex) in analyst.slice(
+                  4 * index,
+                  4 * (index + 1)
+                )"
+                :key="cIndex"
+                class="analyst-item"
+              >
+                <div>
+                  <img :src="cItem.faceUrl" :alt="cItem.nickName" />
+                  <h3>{{ cItem.nickName }}</h3>
+                  <p>{{ cItem.position }}</p>
+                </div>
+              </b-col>
+            </b-row>
+          </template>
+        </b-carousel-slide>
       </b-carousel>
+    </ContentComp>
+
+    <!-- TD学堂 -->
+    <ContentComp>
+      <b-row cols="1" cols-sm="2" cols-md="3" cols-lg="3" class="tutor-list">
+        <b-col v-for="item in 3" :key="item" class="tutor-item">
+          <router-link :to="toPage[item]">
+            <img :src="getTutorIcon(item)" />
+          </router-link>
+        </b-col>
+      </b-row>
+    </ContentComp>
+
+    <!-- 合作机构 -->
+    <ContentComp>
+      <b-row
+        :cols="cooperateList.length / 3"
+        :cols-sm="cooperateList.length / 2"
+        :cols-md="cooperateList.length / 2"
+        :cols-lg="cooperateList.length"
+        class="cooperate-list"
+      >
+        <b-col
+          v-for="(item, index) in cooperateList"
+          :key="index"
+          class="cooperate-item"
+        >
+          <a :href="item.link">
+            <img :src="item.thumb" :alt="item.name" />
+          </a>
+        </b-col>
+      </b-row>
     </ContentComp>
   </div>
 </template>
@@ -34,7 +95,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import { BRow, BCol, BCarousel, BCarouselSlide } from "bootstrap-vue";
 import { FUN_INTRODUCE } from "@/services/constant";
-import { getAnalyst } from "@/services/api";
+import { getAnalyst, getCooperateList } from "@/services/api";
 import ContentComp from "@/components/ContentComp.vue";
 import * as ResType from "@/types/response";
 
@@ -50,9 +111,16 @@ import * as ResType from "@/types/response";
 export default class Home extends Vue {
   funIntroduce = FUN_INTRODUCE;
   analyst = [] as ResType.TeacherData[] | [];
+  cooperateList = [] as ResType.CoopListData[] | [];
+  toPage = {
+    1: "/tutor",
+    2: "/open",
+    3: { name: "Tutor", params: { isTrade: true } },
+  };
 
   created() {
     this.getAnalyst();
+    this.getCooperateList();
   }
 
   async getAnalyst() {
@@ -60,10 +128,18 @@ export default class Home extends Vue {
     this.analyst = res.record;
   }
 
+  async getCooperateList() {
+    const res = await getCooperateList({ index: 1, size: 20 });
+    this.cooperateList = res;
+  }
+
   getIcon(index: number): string {
     return require("../assets/images/home_icon/homepage_icon_0" +
       (index + 1) +
       ".png");
+  }
+  getTutorIcon(index: number): string {
+    return require("../assets/images/TD_imgs/TD_img_" + index + ".png");
   }
 }
 </script>
@@ -107,6 +183,52 @@ export default class Home extends Vue {
         margin-bottom: 20px;
         padding: 0 24px;
         line-height: 22px;
+      }
+    }
+  }
+  .analyst-list {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    .analyst-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      padding-bottom: 15px;
+      img {
+        width: 120px;
+        height: 120px;
+      }
+      h3 {
+        font-size: 20px;
+        padding: 30px 0 19px 0;
+      }
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+  .tutor-item {
+    padding-bottom: 15px;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+  .cooperate-list {
+    .cooperate-item {
+      padding-bottom: 15px;
+      a {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+      }
+      img {
+        width: 100%;
+        height: auto;
       }
     }
   }
