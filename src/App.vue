@@ -5,7 +5,7 @@
         <HeaderComp />
       </template>
       <template v-slot:main>
-        <NavBar />
+        <NavComp />
         <router-view />
       </template>
     </LayoutComp>
@@ -15,7 +15,7 @@
 <script lang="ts">
 import Vue from "vue";
 import LayoutComp from "@/components/LayoutComp.vue";
-import NavBar from "@/components/NavBar.vue";
+import NavComp from "@/components/NavComp.vue";
 import HeaderComp from "@/components/HeaderComp.vue";
 
 export default Vue.extend({
@@ -23,7 +23,7 @@ export default Vue.extend({
   components: {
     LayoutComp,
     HeaderComp,
-    NavBar,
+    NavComp,
   },
 });
 </script>

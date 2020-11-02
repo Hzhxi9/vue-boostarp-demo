@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { BContainer, BRow, BCol } from "bootstrap-vue";
 import FooterComp from "@/components/FooterComp.vue";
 
 export default Vue.extend({

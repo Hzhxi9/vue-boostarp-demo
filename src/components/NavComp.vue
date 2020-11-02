@@ -1,5 +1,8 @@
 <template>
-  <div class="nav">
+  <div
+    class="nav"
+    :class="isMobile ? 'main-color' : isFixed ? 'is-fixed' : 'is-absolute'"
+  >
     <b-container class="nav_box">
       <b-navbar toggleable="lg">
         <b-navbar-brand href="#">
@@ -37,7 +40,7 @@ import {
 } from "bootstrap-vue";
 
 export default Vue.extend({
-  name: "NavBar",
+  name: "NavComp",
   components: {
     BNavbar,
     BNavbarBrand,
@@ -50,6 +53,9 @@ export default Vue.extend({
   data() {
     return {
       NAV,
+      isFixed: false,
+      offsetTop: 49,
+      isMobile: false,
     };
   },
   computed: {
@@ -57,16 +63,41 @@ export default Vue.extend({
       return this.$route.path;
     },
   },
+  mounted() {
+    window.addEventListener("scroll", this.initHeight);
+    window.addEventListener("resize", () => {
+      this.isMobile = document.body.clientWidth <= 992 ? true : false;
+    });
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.initHeight);
+  },
+  methods: {
+    initHeight(): void {
+      const top =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      this.isFixed = top > this.offsetTop ? true : false;
+    },
+  },
 });
 </script>
 
 <style scoped lang="scss">
-.nav {
-  width: 100%;
-  background-color: transparent;
+.nav.main-color {
+  background-color: #333;
+}
+.is-absolute {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.nav {
+  width: 100%;
+  background-color: transparent;
+
   z-index: 2;
 }
 ::v-deep .navbar-nav {
@@ -75,6 +106,24 @@ export default Vue.extend({
 .navbar-brand img {
   width: 109px;
   height: 30px;
+}
+.is-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+.nav_box {
+  background: transparent;
+  -webkit-transition: 1s ease;
+  transition: 1s ease;
+}
+.is-fixed.nav {
+  background: rgba(3, 3, 3, 0.8);
+  border-radius: 0;
+  -webkit-transition: 1s ease;
+  transition: 1s ease;
+  border: 0 none;
 }
 
 .nav_box {

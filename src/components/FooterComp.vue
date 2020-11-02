@@ -76,6 +76,9 @@ export default class FooterComp extends Vue {}
       }
     }
   }
+  .col-center{
+    line-height: 28px;
+  }
   .col-right {
     span {
       margin-top: 26px;
