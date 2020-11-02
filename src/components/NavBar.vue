@@ -1,23 +1,25 @@
 <template>
-  <div class="nav_box">
-    <b-navbar toggleable="lg">
-      <b-navbar-brand href="#">
-        <img src="@/assets/images/wxLogin_goldBangs_logo_2.png" alt="" />
-      </b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+  <div class="nav">
+    <b-container class="nav_box">
+      <b-navbar toggleable="lg">
+        <b-navbar-brand href="#">
+          <img src="@/assets/images/wxLogin_goldBangs_logo_2.png" alt="" />
+        </b-navbar-brand>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav align="right">
-          <b-nav-item
-            v-for="(item, index) in NAV"
-            :key="index"
-            :to="item.path"
-            :class="item.path === currentPath ? 'active' : ''"
-            >{{ item.name }}</b-nav-item
-          >
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav align="right">
+            <b-nav-item
+              v-for="(item, index) in NAV"
+              :key="index"
+              :to="item.path"
+              :class="item.path === currentPath ? 'active' : ''"
+              >{{ item.name }}</b-nav-item
+            >
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+    </b-container>
   </div>
 </template>
 
@@ -31,6 +33,7 @@ import {
   BCollapse,
   BNavbarNav,
   BNavItem,
+  BContainer,
 } from "bootstrap-vue";
 
 export default Vue.extend({
@@ -42,6 +45,7 @@ export default Vue.extend({
     BCollapse,
     BNavbarNav,
     BNavItem,
+    BContainer,
   },
   data() {
     return {
@@ -57,6 +61,14 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
+.nav {
+  width: 100%;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
 ::v-deep .navbar-nav {
   width: 100%;
 }
@@ -66,7 +78,6 @@ export default Vue.extend({
 }
 
 .nav_box {
-  background-color: #333;
   .nav-item .nav-link {
     color: #fff;
   }

@@ -21,9 +21,6 @@ import FooterComp from "@/components/FooterComp.vue";
 export default Vue.extend({
   name: "LayoutComp",
   components: {
-    // BContainer,
-    // BRow,
-    // BCol,
     FooterComp,
   },
 });
@@ -39,6 +36,9 @@ export default Vue.extend({
     background-color: #343434;
     color: #fff;
     padding-top: 50px;
+    position: relative;
+  }
+  main {
     position: relative;
   }
 }

@@ -1,5 +1,45 @@
 <template>
   <div class="home">
+    <b-carousel
+      id="carousel-1"
+      v-model="slide"
+      :interval="0"
+      controls
+      indicators
+      background="#ababab"
+      img-width="1024"
+      img-height="480"
+      style="text-shadow: 1px 1px 2px #333;"
+      class="carousel-home"
+    >
+      <b-carousel-slide v-for="(item, index) in banner" :key="index">
+        <template #img>
+          <div class="carousel-container">
+            <b-container>
+              <h1 :class="{ 'animated bounceInDown': activeIndex === index }">
+                {{ item.title }}
+              </h1>
+              <p :class="{ 'animated fadeInUp': activeIndex === index }">
+                {{ item.subtitle }}
+              </p>
+              <button
+                :class="{ 'animated fadeInUp': activeIndex === index }"
+                class="pressDownButton"
+                @click="jumpToPage(item.link)"
+              >
+                详情
+              </button>
+            </b-container>
+          </div>
+          <img
+            class="d-block img-fluid w-100"
+            :src="item.img"
+            alt="image slot"
+          />
+        </template>
+      </b-carousel-slide>
+    </b-carousel>
+
     <!-- 功能介绍 -->
     <ContentComp
       title="功能介绍"
@@ -120,11 +160,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { BRow, BCol, BCarousel, BCarouselSlide } from "bootstrap-vue";
+import { Component, Watch } from "vue-property-decorator";
+import {
+  BRow,
+  BCol,
+  BCarousel,
+  BCarouselSlide,
+  BContainer,
+} from "bootstrap-vue";
 import { FUN_INTRODUCE } from "@/services/constant";
-import { getAnalyst, getCooperateList } from "@/services/api";
+import { getAnalyst, getCooperateList, getBanner } from "@/services/api";
 import ContentComp from "@/components/ContentComp.vue";
+import Mixins from "@/mixins";
 import * as ResType from "@/types/response";
 
 @Component({
@@ -134,21 +181,31 @@ import * as ResType from "@/types/response";
     BCol,
     BCarousel,
     BCarouselSlide,
+    BContainer,
   },
 })
-export default class Home extends Vue {
+export default class Home extends Mixins {
+  slide = 0;
+  activeIndex = 0;
   funIntroduce = FUN_INTRODUCE;
   analyst = [] as ResType.TeacherData[] | [];
   cooperateList = [] as ResType.CoopListData[] | [];
+  banner = [] as ResType.BannerPageData[] | [];
   toPage = {
     1: "/tutor",
     2: "/open",
     3: { name: "Tutor", params: { isTrade: true } },
   };
 
+  @Watch("slide")
+  onChnageValue(val: number) {
+    this.activeIndex = val;
+  }
+
   created() {
     this.getAnalyst();
     this.getCooperateList();
+    this.getBanner();
   }
 
   async getAnalyst() {
@@ -159,6 +216,19 @@ export default class Home extends Vue {
   async getCooperateList() {
     const res = await getCooperateList({ index: 1, size: 20 });
     this.cooperateList = res;
+  }
+
+  async getBanner() {
+    const res = await getBanner({ type: 1 });
+    this.banner = res.record;
+  }
+
+  onSlideStart() {
+    console.log("start");
+  }
+
+  onSlideEnd() {
+    console.log("end");
   }
 
   getIcon(index: number): string {
@@ -172,11 +242,57 @@ export default class Home extends Vue {
 }
 </script>
 
+<style lang="scss" scoped>
+@import "../assets/styles/animate.scss";
+</style>
 <style lang="less" scoped>
 .analyst-carousel ::v-deep .carousel-indicators {
   bottom: -25px;
 }
 .home {
+  .carousel-home {
+    .carousel-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: #fff;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      h1 {
+        font-size: 45px;
+        font-weight: 600;
+        line-height: 50px;
+        margin-bottom: 30px;
+        width: 60%;
+      }
+      p {
+        font-size: 15px;
+        margin-bottom: 30px;
+      }
+      .pressDownButton {
+        background: #fe8824;
+        padding: 10px 40px;
+        color: #fff;
+        border-radius: 6px;
+        margin-bottom: 4px;
+        cursor: pointer;
+        border-bottom: 4px solid #d9731e;
+        transition: all 0.1s ease-in-out;
+        text-transform: uppercase;
+        font-family: Adobe Heiti Std;
+      }
+
+      .pressDownButton:hover {
+        border-bottom-width: 0;
+        margin-top: 4px;
+        &::after {
+          clear: both;
+        }
+      }
+    }
+  }
   .introduce {
     .introduce-item {
       > div {
