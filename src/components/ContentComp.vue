@@ -1,17 +1,22 @@
 <template>
-  <b-container class="tbv-example-row bv-example-row-flex-cols container">
-    <div class="header">
-      <h2>标题</h2>
-      <p>描述</p>
-    </div>
-    <div class="main">
-      <slot />
-    </div>
-  </b-container>
+  <div class="content" :style="contentStyle">
+    <b-container
+      class="tbv-example-row bv-example-row-flex-cols container"
+      fluid
+    >
+      <div class="header">
+        <h2 :style="titleStyle">{{ title }}</h2>
+        <p :style="descStyle">{{ desc }}</p>
+      </div>
+      <div class="main">
+        <slot />
+      </div>
+    </b-container>
+  </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 import { BContainer } from "bootstrap-vue";
 
 @Component({
@@ -19,15 +24,24 @@ import { BContainer } from "bootstrap-vue";
     BContainer,
   },
 })
-export default class ContentComp extends Vue {}
+export default class ContentComp extends Vue {
+  @Prop({ default: "" }) readonly title: string | undefined;
+  @Prop({ default: "" }) readonly desc: string | undefined;
+  @Prop() readonly contentStyle: { [key: string]: string } | undefined;
+  @Prop() readonly descStyle: { [key: string]: string } | undefined;
+  @Prop() readonly titleStyle: { [key: string]: string } | undefined;
+}
 </script>
 
 <style lang="less" scoped>
-.container {
-  margin-top: 100px;
-  width: 100%;
+.content {
   background: no-repeat;
   background-size: 100% 100%;
+  margin-top: 100px;
+}
+.container {
+  width: 100%;
+
   text-align: center;
   .header {
     h2 {

@@ -39,6 +39,7 @@ export default Vue.extend({
     background-color: #343434;
     color: #fff;
     padding-top: 50px;
+    position: relative;
   }
 }
 </style>

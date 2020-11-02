@@ -1,7 +1,12 @@
 <template>
   <div class="home">
     <!-- 功能介绍 -->
-    <ContentComp>
+    <ContentComp
+      title="功能介绍"
+      desc="黄金帮支持中国工商银行贵金属递延产品开户及交易，用户可以在黄金帮开通工行贵金属递延账户。黄金帮提供专业的行情分析策略，详解时事行情、盘面分析、专业指导，可一键订阅名师，获取名师操作动态。
+
+"
+    >
       <b-row cols="1" cols-sm="2" cols-md="3" cols-lg="4" class="introduce">
         <b-col
           v-for="(item, index) in funIntroduce"
@@ -18,11 +23,20 @@
     </ContentComp>
 
     <!-- 名师介绍 -->
-    <ContentComp>
+    <ContentComp
+      title="黄金投资分析师"
+      desc="黄金帮汇聚了来自各大银行、机构和研究院的具有资深交易策略经验及盈利能力的黄金交易投资分析师，为用户进行行情分析及交易指导。"
+      :style="{
+        backgroundImage: `url(${require('../assets/images/indexImg/testimonial-bg_1.png')})`,
+        padding: '100px 0',
+      }"
+      :descStyle="{ color: '#fff' }"
+      :titleStyle="{ color: '#fff' }"
+    >
       <b-carousel
         id="carousel-1"
         style="text-shadow: 0px 0px 2px #000"
-        controls
+        class="analyst-carousel"
         indicators
       >
         <b-carousel-slide
@@ -58,7 +72,12 @@
     </ContentComp>
 
     <!-- TD学堂 -->
-    <ContentComp>
+    <ContentComp
+      title="TD学堂"
+      desc="黄金帮联合广东南方黄金市场研究院，提供丰富的交易教学，理论知识与交易规则相结合，让您轻松玩转TD
+
+"
+    >
       <b-row cols="1" cols-sm="2" cols-md="3" cols-lg="3" class="tutor-list">
         <b-col v-for="item in 3" :key="item" class="tutor-item">
           <router-link :to="toPage[item]">
@@ -69,11 +88,20 @@
     </ContentComp>
 
     <!-- 合作机构 -->
-    <ContentComp>
+    <ContentComp
+      title="合作机构"
+      desc="我们的合作伙伴有"
+      :style="{
+        backgroundImage: `url(${require('../assets/images/clients-bg.png')})`,
+        padding: '100px 0',
+      }"
+      :titleStyle="{ color: '#fff' }"
+      :descStyle="{ textAlign: 'center', color: '#fff' }"
+    >
       <b-row
-        :cols="cooperateList.length / 3"
-        :cols-sm="cooperateList.length / 2"
-        :cols-md="cooperateList.length / 2"
+        :cols="parseInt(cooperateList.length / 3)"
+        :cols-sm="parseInt(cooperateList.length / 2)"
+        :cols-md="parseInt(cooperateList.length / 2)"
         :cols-lg="cooperateList.length"
         class="cooperate-list"
       >
@@ -145,6 +173,9 @@ export default class Home extends Vue {
 </script>
 
 <style lang="less" scoped>
+.analyst-carousel ::v-deep .carousel-indicators {
+  bottom: -25px;
+}
 .home {
   .introduce {
     .introduce-item {
