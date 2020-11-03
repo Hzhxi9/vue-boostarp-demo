@@ -1,44 +1,47 @@
 <template>
   <div class="home">
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="0"
-      controls
-      indicators
-      background="#ababab"
-      img-width="1024"
-      img-height="480"
-      style="text-shadow: 1px 1px 2px #333;"
-      class="carousel-home"
-    >
-      <b-carousel-slide v-for="(item, index) in banner" :key="index">
-        <template #img>
-          <div class="carousel-container">
-            <b-container>
-              <h1 :class="{ 'animated bounceInDown': activeIndex === index }">
-                {{ item.title }}
-              </h1>
-              <p :class="{ 'animated fadeInUp': activeIndex === index }">
-                {{ item.subtitle }}
-              </p>
-              <button
-                :class="{ 'animated fadeInUp': activeIndex === index }"
-                class="pressDownButton"
-                @click="jumpToPage(item.link)"
-              >
-                详情
-              </button>
-            </b-container>
-          </div>
-          <img
-            class="d-block img-fluid w-100"
-            :src="item.img"
-            alt="image slot"
-          />
-        </template>
-      </b-carousel-slide>
-    </b-carousel>
+    <!-- 轮播图 -->
+    <div class="carousel" @mousemove="move" @mouseleave="leave">
+      <b-carousel
+        id="carousel-1"
+        v-model="slide"
+        :interval="3000"
+        controls
+        indicators
+        background="#ababab"
+        img-width="1024"
+        img-height="480"
+        style="text-shadow: 1px 1px 2px #333;"
+        class="carousel-home"
+      >
+        <b-carousel-slide v-for="(item, index) in banner" :key="index">
+          <template #img>
+            <div class="carousel-container">
+              <b-container>
+                <h1 :class="{ 'animated bounceInDown': activeIndex === index }">
+                  {{ item.title }}
+                </h1>
+                <p :class="{ 'animated fadeInUp': activeIndex === index }">
+                  {{ item.subtitle }}
+                </p>
+                <button
+                  :class="{ 'animated fadeInUp': activeIndex === index }"
+                  class="pressDownButton"
+                  @click="jumpToPage(item.link)"
+                >
+                  详情
+                </button>
+              </b-container>
+            </div>
+            <img
+              class="d-block img-fluid w-100"
+              :src="item.img"
+              alt="image slot"
+            />
+          </template>
+        </b-carousel-slide>
+      </b-carousel>
+    </div>
 
     <!-- 功能介绍 -->
     <ContentComp
@@ -187,6 +190,7 @@ import * as ResType from "@/types/response";
 export default class Home extends Mixins {
   slide = 0;
   activeIndex = 0;
+  controls = false;
   funIntroduce = FUN_INTRODUCE;
   analyst = [] as ResType.TeacherData[] | [];
   cooperateList = [] as ResType.CoopListData[] | [];
@@ -208,6 +212,28 @@ export default class Home extends Mixins {
     this.getBanner();
   }
 
+  move() {
+    const prev = document.querySelector(
+      ".carousel-control-prev"
+    ) as HTMLDivElement;
+    const next = document.querySelector(
+      ".carousel-control-next "
+    ) as HTMLDivElement;
+    prev.style.left = "50px";
+    next.style.right = "50px";
+  }
+
+  leave() {
+    const prev = document.querySelector(
+      ".carousel-control-prev"
+    ) as HTMLDivElement;
+    const next = document.querySelector(
+      ".carousel-control-next "
+    ) as HTMLDivElement;
+    prev.style.left = "-80px";
+    next.style.right = "-80px";
+  }
+
   async getAnalyst() {
     const res = await getAnalyst({ isWeb: 1, index: 1 });
     this.analyst = res.record;
@@ -223,19 +249,12 @@ export default class Home extends Mixins {
     this.banner = res.record;
   }
 
-  onSlideStart() {
-    console.log("start");
-  }
-
-  onSlideEnd() {
-    console.log("end");
-  }
-
   getIcon(index: number): string {
     return require("../assets/images/home_icon/homepage_icon_0" +
       (index + 1) +
       ".png");
   }
+
   getTutorIcon(index: number): string {
     return require("../assets/images/TD_imgs/TD_img_" + index + ".png");
   }
@@ -249,6 +268,37 @@ export default class Home extends Mixins {
 .analyst-carousel ::v-deep .carousel-indicators {
   bottom: -25px;
 }
+.carousel-home ::v-deep .carousel-control-prev,
+.carousel-home ::v-deep .carousel-control-next {
+  width: 65px;
+  height: 65px;
+  border: 3px solid #fff;
+  background: transparent;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  i {
+    font-size: inherit;
+  }
+  &:hover {
+    border-color: rgb(253, 135, 36);
+    span {
+      filter: invert(50%) sepia(77%) saturate(511%) hue-rotate(344deg)
+        brightness(106%) contrast(99%);
+    }
+  }
+}
+.carousel-home ::v-deep .carousel-control-prev {
+  left: -80px;
+  transition: left 1s;
+}
+.carousel-home ::v-deep.carousel-control-next {
+  right: -80px;
+  transition: right 1s;
+}
+
 .home {
   .carousel-home {
     .carousel-container {
@@ -261,15 +311,15 @@ export default class Home extends Mixins {
       display: flex;
       align-items: center;
       h1 {
-        font-size: 45px;
+        font-size: 2.315vw;
         font-weight: 600;
         line-height: 50px;
-        margin-bottom: 30px;
+        margin-bottom: 1.481vw;
         width: 60%;
       }
       p {
-        font-size: 15px;
-        margin-bottom: 30px;
+        font-size: 0.833vw;
+        margin-bottom: 1.667vw;
       }
       .pressDownButton {
         background: #fe8824;
